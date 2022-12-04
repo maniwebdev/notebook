@@ -1,11 +1,31 @@
-import { View, Text,Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text,Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import React,{useState} from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const loginSubmit = async () => {
+      const response = await fetch(`http://192.168.1.178:3000/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const json = await response.json();
+  
+      console.log(json);
+      if (json.success) {
+        await AsyncStorage.setItem("token", json.authtoken);
+        navigation.navigate("Home");
+      } 
+    };
+
   return (
     <SafeAreaView style={{backgroundColor:"white", flex:1}}>
     <ScrollView>
@@ -38,7 +58,7 @@ const Login = ({navigation}) => {
     />
     </View>
     <View style={{paddingHorizontal:20}}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={loginSubmit}>
     <Text style={{textAlign:"center", backgroundColor:"grey", paddingVertical:10, borderRadius:10, color:"white", fontWeight:"600"}}>Login</Text>
     </TouchableOpacity>
     </View>

@@ -7,6 +7,27 @@ const Signup = ({navigation}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+ const SignupSubmit = async() => {
+  const response = await fetch(`http://192.168.1.178:3000/api/auth/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+    }),
+  });
+  const data = await response.json();
+  console.log(data);
+  navigation.navigate('Login')
+
+ }
+
+
+
   return (
     <SafeAreaView style={{backgroundColor:"white", flex:1}}>
     <ScrollView>
@@ -49,12 +70,12 @@ const Signup = ({navigation}) => {
     />
     </View>
     <View style={{paddingHorizontal:20}}>
-    <TouchableOpacity>
-    <Text style={{textAlign:"center", backgroundColor:"grey", paddingVertical:10, borderRadius:10, color:"white", fontWeight:"600"}}>Login</Text>
+    <TouchableOpacity onPress={SignupSubmit}>
+    <Text style={{textAlign:"center", backgroundColor:"grey", paddingVertical:10, borderRadius:10, color:"white", fontWeight:"600"}}>Sign up</Text>
     </TouchableOpacity>
     </View>
     <View>
-    <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{display:"flex", justifyContent:"center", flexDirection:"row", paddingVertical:20}}>
+    <TouchableOpacity onPress={() => navigation.navigate("Login")}  style={{display:"flex", justifyContent:"center", flexDirection:"row", paddingVertical:20}}>
     <Text style={{color:"grey"}}>
     Already have an account?
     </Text>

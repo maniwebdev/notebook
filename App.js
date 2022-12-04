@@ -5,26 +5,29 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/screens/Login';
 import Signup from './src/screens/Signup';
+import Notes from './src/screens/Notes';
+import NoteState from './components/NoteState';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+ function App() {
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName='Login'>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="Notes" component={Notes} />
     </Stack.Navigator>
   </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default () => {
+  return (
+    <NoteState>
+      <App />
+    </NoteState>
+  );
+};
+
